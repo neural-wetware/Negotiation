@@ -34,7 +34,7 @@ class Header
      */
     public function __construct($value)
     {
-        list($type, $parameters) = $this->parseParameters($value);
+        list($type, $parameters) = self::parseParameters($value);
 
         $type = trim(strtolower($type));
 
@@ -44,7 +44,7 @@ class Header
         }
 
         $this->value      = $value;
-        $this->normalised = $type . "; " . $this->buildParametersString($parameters);
+        $this->normalised = $type . "; " . self::buildParametersString($parameters);
         $this->type       = $type;
         $this->parameters = $parameters;
     }

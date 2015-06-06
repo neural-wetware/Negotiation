@@ -13,7 +13,7 @@ class CharsetNegotiator extends AbstractNegotiator
      *
      * @return AcceptCharsetHeader
      */
-    protected function typeFactory($type)
+    static function typeFactory($type)
     {
         return new AcceptCharsetHeader($type);
     }
@@ -21,7 +21,7 @@ class CharsetNegotiator extends AbstractNegotiator
     /**
      * {@inheritdoc}
      */
-    protected function match(Header $charsetHeader, Header $priority, $index) {
+    static function match(Header $charsetHeader, Header $priority, $index) {
         $ac = $charsetHeader->getType();
         $pc = $priority->getType();
 

@@ -10,7 +10,7 @@ class Negotiator extends AbstractNegotiator
      *
      * @return AcceptHeader
      */
-    protected function typeFactory($type)
+    static function typeFactory($type)
     {
         return new AcceptHeader($type);
     }
@@ -18,7 +18,7 @@ class Negotiator extends AbstractNegotiator
     /**
      * {@inheritdoc}
      */
-    protected function match(Header $acceptHeader, Header $priority, $index) {
+    static function match(Header $acceptHeader, Header $priority, $index) {
         $ab = $acceptHeader->getBasePart();
         $pb = $priority->getBasePart();
 

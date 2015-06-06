@@ -2,7 +2,7 @@
 
 namespace Negotiation;
 
-abstract class AbstractNegotiator
+abstract class AbstractNegotiator implements NegotiatorInterface
 {
     /**
      * @param string $header     A string containing an `Accept|Accept-*` header.
@@ -20,18 +20,16 @@ abstract class AbstractNegotiator
             throw new \Exception('empty header given'); 
         }
 
-        $headers = $this->parseHeader($header);
+        $headers = self::parseHeader($header);
 
-        $headers = $this->mapHeaders($headers);
-        $priorities = $this->mapHeaders($priorities);
+        $headers = self::mapHeaders($headers);
+        $priorities = self::mapHeaders($priorities);
 
-        $matches = $this->findMatches($headers, $priorities);
+        $matches = self::findMatches($headers, $priorities);
 
-        # find most specific match for each priority
-        $preceding_matches = array_reduce($matches, array($this, 'reduce'), array());
+        $preceding_matches = array_reduce($matches, 'self::reduce', array());
 
-        # TODO what if only 1 or 2 items. will usort() work? read somewhere it won't...
-        usort($preceding_matches, array($this, 'compare'));
+        usort($preceding_matches, 'self::compare');
 
         $match = array_shift($preceding_matches);
 
@@ -47,7 +45,7 @@ abstract class AbstractNegotiator
      *
      * @return Header[]
      */
-    protected function parseHeader($header)
+    private static function parseHeader($header)
     {
         $res = preg_match_all('/(?:[^,"]*(?:"[^"]+")?)+[^,"]*/', $header, $matches);
 
@@ -63,9 +61,9 @@ abstract class AbstractNegotiator
      *
      * @return Header[]
      */
-    private function mapHeaders($priorities)
+    private static function mapHeaders($priorities)
     {
-        return array_map(function($p) { return $this->typeFactory($p); }, $priorities);
+        return array_map(function($p) { return static::typeFactory($p); }, $priorities);
     }
 
     /**
@@ -74,12 +72,12 @@ abstract class AbstractNegotiator
      *
      * @return Match[] Headers matched
      */
-    protected function findMatches(array $headerParts, array $priorities) {
+    private static function findMatches(array $headerParts, array $priorities) {
         $matches = array();
 
         foreach ($priorities as $index => $p) {
             foreach ($headerParts as $h) {
-                if ($match = $this->match($h, $p, $index))
+                if ($match = static::match($h, $p, $index))
                     $matches[] = $match;
             }
         }
@@ -122,18 +120,5 @@ abstract class AbstractNegotiator
 
         return 0;
     }
-
-    /**
-     * @param Header $header
-     * @param Header $priority
-     *
-     * @return Match Headers matched
-     */
-    abstract protected function match(Header $header, Header $priority, $index);
-
-    /**
-     * TODO doc
-     */
-    abstract protected function typeFactory($header);
 
 }

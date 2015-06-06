@@ -13,7 +13,7 @@ class EncodingNegotiator extends AbstractNegotiator
      *
      * @return AcceptEncodingHeader
      */
-    protected function typeFactory($type)
+    static function typeFactory($type)
     {
         return new AcceptEncodingHeader($type);
     }
@@ -21,7 +21,7 @@ class EncodingNegotiator extends AbstractNegotiator
     /**
      * {@inheritdoc}
      */
-    protected function match(Header $charsetHeader, Header $priority, $index) {
+    static function match(Header $charsetHeader, Header $priority, $index) {
     #TODO check this against rfc!!!
         $ac = $charsetHeader->getType();
         $pc = $priority->getType();

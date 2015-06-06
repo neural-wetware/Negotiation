@@ -13,7 +13,7 @@ class LanguageNegotiator extends AbstractNegotiator
      *
      * @return AcceptLanguageHeader
      */
-    protected function typeFactory($type)
+    static function typeFactory($type)
     {
         return new AcceptLanguageHeader($type);
     }
@@ -21,7 +21,7 @@ class LanguageNegotiator extends AbstractNegotiator
     /**
      * {@inheritdoc}
      */
-    protected function match(Header $acceptLanguageHeader, Header $priority, $index) {
+    static function match(Header $acceptLanguageHeader, Header $priority, $index) {
         $ab = $acceptLanguageHeader->getBasePart();
         $pb = $priority->getBasePart();
 
