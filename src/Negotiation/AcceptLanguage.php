@@ -2,7 +2,7 @@
 
 namespace Negotiation;
 
-final class AcceptLanguage extends BaseAccept implements AcceptHeader
+final class AcceptLanguage extends BaseAccept
 {
     private $basePart;
 

@@ -11,7 +11,7 @@ abstract class AbstractNegotiator
      * @param string $header     A string containing an `Accept|Accept-*` header.
      * @param array  $priorities A set of server priorities.
      *
-     * @return AcceptHeader best matching type
+     * @return BaseAccept best matching type
      */
     public function getBest($header, array $priorities)
     {
@@ -40,18 +40,18 @@ abstract class AbstractNegotiator
     /**
      * @param string $header accept header part or server priority
      *
-     * @return AcceptHeader Parsed header object
+     * @return BaseAccept Parsed header object
      */
     abstract protected function acceptFactory($header);
 
     /**
-     * @param AcceptHeader $header
-     * @param AcceptHeader $priority
+     * @param BaseAccept $header
+     * @param BaseAccept $priority
      * @param integer      $index
      *
      * @return Match|null Headers matched
      */
-    protected function match(AcceptHeader $header, AcceptHeader $priority, $index)
+    protected function match(BaseAccept $header, BaseAccept $priority, $index)
     {
         $ac = $header->getType();
         $pc = $priority->getType();
@@ -70,7 +70,7 @@ abstract class AbstractNegotiator
     /**
      * @param string $header A string that contains an `Accept*` header.
      *
-     * @return AcceptHeader[]
+     * @return BaseAccept[]
      */
     private function parseHeader($header)
     {
@@ -84,7 +84,7 @@ abstract class AbstractNegotiator
     }
 
     /**
-     * @param AcceptHeader[] $headerParts
+     * @param BaseAccept[] $headerParts
      * @param Priority[]     $priorities  Configured priorities
      *
      * @return Match[] Headers matched
